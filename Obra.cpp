@@ -1,5 +1,6 @@
 #include<iostream>
 #include<string>
+#include<sstream>
 #include<fstream>
 #include<vector>
 
@@ -52,12 +53,12 @@ class Obra {
 
 		}
 
-		void mostrarAutores() {
+		/* void mostrarAutores() {                            REPENSAR
 			for (int i = 0; i < 6; i++) cout << "Autor:" << autores[i] << endl;
 		}
 
-		bool procuraAutor(string n) {
-			int j = 0;
+		/* bool procuraAutor(string n) {                      REFAZER - ÍCARO
+ 			int j = 0;
 			for (auto i = autores.begin(); i != autores.end(); i++) {
 					if (autores[j].compare(n) == 1) return true;
 				//	else cout << autores[j].compare(n) << endl;
@@ -65,11 +66,26 @@ class Obra {
 			}
 
 			return false;
-
 		}
+		*/
 
 		string obtemTitulo() {
 			return titulo;
+		}
+
+		string obtemObra() {
+			stringstream ss;
+			ss << "Título: " << titulo << endl;
+			ss << "Ano de lançamento: " << ano << endl;
+			ss << "Autor(es): ";
+			int j = 0;
+			for (auto i = autores.begin(); i != autores.end(); i++) {  // NÃO TA MOSTRANDO OS AUTORES DIREITO
+					ss << autores[j] << ", ";
+					j++;
+			}
+
+			ss << endl;
+			return ss.str();
 		}
 
 };

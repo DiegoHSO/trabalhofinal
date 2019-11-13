@@ -4,3 +4,5 @@ git pull origin master - atualiza do site para o PC
 git add . - prepara os arquivos adicionados na pasta para adicionar na nuvem
 git commit -m "Comentário" - atualiza para o site
 git push origin master - atualiza o repositório da nuvem
+
+Dia - Fazer diagramas UML

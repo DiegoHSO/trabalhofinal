@@ -12,6 +12,7 @@ class Obra {
 		vector<string> autores;
 		string titulo;
 		int ano;
+		int numAutores; // para facilitar a busca por autores
 
 	public:
 		Obra(string nome) {
@@ -48,26 +49,18 @@ class Obra {
 				}
 
 			}
-
+			this->numAutores=autores.size(); //vide o privado
 			arq.close();
 
 		}
 
-		/* void mostrarAutores() {                            REPENSAR
-			for (int i = 0; i < 6; i++) cout << "Autor:" << autores[i] << endl;
+		string obtemAutor(int n) {//criei para poder fazer a pesquisa por autor
+			return autores[n];
 		}
 
-		/* bool procuraAutor(string n) {                      REFAZER - ÍCARO
- 			int j = 0;
-			for (auto i = autores.begin(); i != autores.end(); i++) {
-					if (autores[j].compare(n) == 1) return true;
-				//	else cout << autores[j].compare(n) << endl;
-					j++;
-			}
-
-			return false;
+		int obtemNumAutor() {//criei para facilitar a pesquisa por autor
+			return numAutores;
 		}
-		*/
 
 		string obtemTitulo() {
 			return titulo;
@@ -75,17 +68,16 @@ class Obra {
 
 		string obtemObra() {
 			stringstream ss;
-			ss << "Título: " << titulo << endl;
-			ss << "Ano de lançamento: " << ano << endl;
-			ss << "Autor(es): ";
-			int j = 0;
-			for (auto i = autores.begin(); i != autores.end(); i++) {  // NÃO TA MOSTRANDO OS AUTORES DIREITO
-					ss << autores[j] << ", ";
-					j++;
+			ss << "Título: " << endl << titulo << endl;
+			ss << "Ano de lançamento: " << endl << ano << endl;
+			ss << "Autor(es): " << endl;
+			for (int i = 0; i < numAutores; i++) {
+				ss << autores[i] << endl;
 			}
 
 			ss << endl;
 			return ss.str();
 		}
+
 
 };

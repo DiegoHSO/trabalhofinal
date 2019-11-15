@@ -52,7 +52,7 @@ class Biblioteca {
 				}
 
 
-	        /*	if (op == 2) { // AINDA TENHO QUE PENSAR EM COMO FAZER (MOSTRAR TODOS OS AUTORES SEM REPETIÇÃO)
+	        /*		if (op == 2) { // AINDA TENHO QUE PENSAR EM COMO FAZER (MOSTRAR TODOS OS AUTORES SEM REPETIÇÃO)
 					int k = 0;
 					for (auto i = obras.begin(); i != obras.end(); i++) {
 						int l = 0;
@@ -97,10 +97,19 @@ class Biblioteca {
 						searchTitulo(obras, nom); // Método criado pelo Ícaro
 					}
 
+					if (op2 == 3) { // Pesquisa entre dois anos digitados pelo usuário, implementado por Samuel
+						int ano1, ano2;
+						cout << "Digite os dois anos para pesquisar os livros neste intervalo:" << endl;
+						cin >> ano1;
+						cin.get();
+						cin >> ano2;
+						cin.get();
+						cout << "Pesquisando obras entre " << ano1 << " e " << ano2 << endl;
+						searchObras(obras, ano1, ano2);
+					}
+
 				}
-
-				cout << "\n";
-
+				cout << endl;
 			}
 		}
 
@@ -167,5 +176,12 @@ class Biblioteca {
 			}
 
 			if(f == 0) cout << "O nome " << str1 << " não foi encontrado na base de dados." << endl;
+		}
+
+		void searchObras(vector <Obra> obras, int a1, int a2){
+			for(int i = 0; i < obras.size(); i++)
+				if(obras[i].obtemAno() >= a1 && obras[i].obtemAno() <= a2)
+					cout << obras[i].obtemObra() << endl;
+
 		}
 	};

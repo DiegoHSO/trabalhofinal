@@ -66,6 +66,10 @@ class Obra {
 			return titulo;
 		}
 
+		int obtemAno() { // adicionei para poder fazer outro método na Biblioteca.cpp  / Samuel
+			return ano;
+		}
+
 		string obtemObra() {
 			stringstream ss;
 			ss << "Título: " << endl << titulo << endl;

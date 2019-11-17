@@ -2,16 +2,18 @@
 #include<string>
 #include<sstream>
 #include<vector>
+#include<set>
 #include "Obra.cpp"
 
 using namespace std;
+
 
 class Biblioteca {
 
 	private:
 		vector<Obra> obras;
-		vector<string> autores; // Mais tarde irei fazer o método que mostra todos os autores
-					// da Biblioteca, por isso criei esse vector para guardá-los
+		set<string> autores;
+
 	public:
 		Biblioteca() {}
 
@@ -24,10 +26,27 @@ class Biblioteca {
 				cin >> choice;
 				cin.get();
 				if (choice == 'S') {
-					cout << "Digite o nome do arquivo no formato .enw:" << endl;
-					string n;
-					getline(cin, n);
-					adicionaObra(n); // Método implementado abaixo
+
+					cout << "Deseja adicionar via:" << endl;
+					cout << "(1) Teclado" << endl;
+					cout << "(2) Arquivo" << endl;
+
+					int op;
+					cin >> op;
+					cin.get();
+
+					if (op == 1) {
+						adicionaObraTeclado();
+					}
+
+					if (op == 2) {
+						cout << "Digite o nome do arquivo no formato .enw:" << endl;
+						string n;
+						getline(cin, n);
+						adicionaObraArquivo(n); // Método implementado abaixo
+					}
+
+					else cout << "Opção inválida! Voltando ao menu anterior..." << endl;
 				}
 
 				else if (choice != 'S' && choice != 'N') cout << "Digite uma opção válida!" << endl;
@@ -51,29 +70,22 @@ class Biblioteca {
 					cout << obtemTitulos(); // Método implementado abaixo
 				}
 
+	       			if (op == 2) {
+					cout << obtemAutores(); // Método implementado abaixo
+				}
 
-	        /*		if (op == 2) { // AINDA TENHO QUE PENSAR EM COMO FAZER (MOSTRAR TODOS OS AUTORES SEM REPETIÇÃO)
-					int k = 0;
-					for (auto i = obras.begin(); i != obras.end(); i++) {
-						int l = 0;
-						for (auto j = obras.begin() + 1; j != obras.end(); j++) {
-							if (obras[k].obtem
-							cout << obras[k].obtemAutor() << endl;
-							j++;
-						}
-					}
-			*/
 				if (op == 3) {
 					cout << obtemObras(); // Método implementado abaixo
 				}
-
 
 				if (op == 4) {
 					cout << "Deseja filtrar as obras por:" << endl;
 					cout << "(1) Autor" << endl;
 					cout << "(2) Título" << endl;
 					cout << "(3) Intervalos entre 2 anos" << endl;
-					cout << "(4) Voltar ao menu anterior" << endl;
+					cout << "(4) Totalização do número de obras por ano" << endl;
+					cout << "(5) Totalização do número de obras por autor" << endl;
+					cout << "(6) Voltar ao menu anterior" << endl;
 
 					int op2;
 					cin >> op2;
@@ -108,23 +120,51 @@ class Biblioteca {
 						searchObras(obras, ano1, ano2);
 					}
 
+					if (op2 == 4) { // Totalização do número de obras por ano - Samuel vai implementar
+
+					}
+
+					if (op2 == 5) { // Totalização do número de obras por autor - Samuel vai implementar
+
+					}
+
+
 				}
+
 				cout << endl;
 			}
 		}
 
 
-		void adicionaObra(string nome) { // Cria uma obra nova e a adiciona na lista de obras
+		void adicionaObraArquivo(string nome) { // Cria uma obra nova e a adiciona na lista de obras
 			Obra nova(nome);
+
+			for (int i = 0; i < nova.obtemNumAutor(); i++)
+				autores.insert(nova.obtemAutor(i));
+
 			obras.push_back(nova);
+		}
+
+		void adicionaObraTeclado() { // Diego vai implementar
+
 		}
 
 		string obtemTitulos() { // Passa para um stringstream todos os títulos das obras que estão na lista de obras
 			stringstream ss;
 			ss << "Obras cadastradas:" << endl;
-			for (int i = 0; i < obras.size(); i++) {
+			for (int i = 0; i < obras.size(); i++)
 				ss << obras[i].obtemTitulo() << endl;
-			}
+
+			return ss.str();
+		}
+
+		string obtemAutores() {
+			stringstream ss;
+			ss << "Autores cadastrados:" << endl;
+			set <string> :: iterator itr;
+			for (itr = autores.begin(); itr != autores.end(); ++itr)
+				ss << *itr << endl;
+
 			return ss.str();
 		}
 

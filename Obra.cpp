@@ -16,11 +16,14 @@ class Obra {
 
 	public:
 		Obra(string nome) {
+			numAutores = 0;
+			ano = 0;
 
 			ifstream arq;
 			arq.open(nome, ios::in);
 			if (!arq.is_open()) {
 				cout << "Arquivo inválido!" << endl;
+				arq.close();
 				return;
 			}
 

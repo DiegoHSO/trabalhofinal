@@ -36,9 +36,18 @@ class Obra {
 
 				if (id == "%A") {
 					arq.get(); // Pega o espaço que vem depois do %A
-					string autor;
-					getline(arq, autor);
-					autores.push_back(autor); // Coloca o autor no vetor de Autores
+					string nome; // String temporária para armazenar o nome
+					string sobrenome; // String temporária para armazenar o sobrenome
+
+					char delim = ','; // Delimitador criado para separar o nome do sobrenome
+					getline(arq, sobrenome, delim); // Sobrenome sendo pego do arquivo
+					arq.get(); // Pega o espaço que vem depois da vírgula, no arquivo
+
+					getline(arq, nome); // Nome sendo pego no arquivo
+					nome.erase(nome.end() - 1); // Eliminando a quebra de linha que vem após o nome
+
+					string autor = nome + " " + sobrenome; // Concatena nome e sobrenome em uma única string
+					autores.push_back(autor); // Adicona o autor no vector de Autores
 				}
 
 				if (id == "%T") {
@@ -52,9 +61,27 @@ class Obra {
 				}
 
 			}
-			this->numAutores=autores.size(); //vide o privado
+			this->numAutores=autores.size(); // Salva na variável numAutores o número de autores salvos no vector
 			arq.close();
 
+		}
+
+		Obra() {
+			numAutores = 0;
+			ano = 0;
+		}
+
+		void defineAutor(string autor) {
+			this->autores.push_back(autor);
+			this->numAutores = autores.size();
+		}
+
+		void defineAno(int ano) {
+			this->ano = ano;
+		}
+
+		void defineTitulo(string titulo) {
+			this->titulo = titulo;
 		}
 
 		string obtemAutor(int n) {//criei para poder fazer a pesquisa por autor
@@ -75,16 +102,13 @@ class Obra {
 
 		string obtemObra() {
 			stringstream ss;
-			ss << "Título: " << endl << titulo << endl;
-			ss << "Ano de lançamento: " << endl << ano << endl;
-			ss << "Autor(es): " << endl;
+			ss << "Título: " << titulo << endl;
+			ss << "Ano de lançamento: " << ano << endl;
+			ss << "Autor(es): ";
 			for (int i = 0; i < numAutores; i++) {
-				ss << autores[i] << endl;
+				if (i == numAutores - 1) ss << autores[i] << endl;
+				else ss << autores[i] << ", ";
 			}
-
-			ss << endl;
 			return ss.str();
 		}
-
-
 };

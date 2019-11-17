@@ -7,7 +7,6 @@
 
 using namespace std;
 
-
 class Biblioteca {
 
 	private:
@@ -27,7 +26,7 @@ class Biblioteca {
 				cin.get();
 				if (choice == 'S') {
 
-					cout << "Deseja adicionar via:" << endl;
+					cout << "\nDeseja adicionar via:" << endl;
 					cout << "(1) Teclado" << endl;
 					cout << "(2) Arquivo" << endl;
 
@@ -39,14 +38,14 @@ class Biblioteca {
 						adicionaObraTeclado();
 					}
 
-					if (op == 2) {
-						cout << "Digite o nome do arquivo no formato .enw:" << endl;
+					else if (op == 2) {
+						cout << "\nDigite o nome do arquivo no formato .enw:" << endl;
 						string n;
 						getline(cin, n);
 						adicionaObraArquivo(n); // Método implementado abaixo
 					}
 
-					else cout << "Opção inválida! Voltando ao menu anterior..." << endl;
+					else cout << "\nOpção inválida! Voltando ao menu anterior..." << endl;
 				}
 
 				else if (choice != 'S' && choice != 'N') cout << "Digite uma opção válida!" << endl;
@@ -97,7 +96,7 @@ class Biblioteca {
 						cout << "Digite o nome do autor a ser buscado na base de dados:" << endl;
 						getline(cin, nom);
 						cout << "\n";
-						searchAutor(obras, nom); // Método criado pelo Ícaro
+						searchAutor(nom); // Método criado pelo Ícaro
 					}
 
 
@@ -106,7 +105,7 @@ class Biblioteca {
 						cout << "Digite parte do título a ser buscado na base de dados:" << endl;
 						getline(cin, nom);
 						cout << "\n";
-						searchTitulo(obras, nom); // Método criado pelo Ícaro
+						searchTitulo(nom); // Método criado pelo Ícaro
 					}
 
 					if (op2 == 3) { // Pesquisa entre dois anos digitados pelo usuário, implementado por Samuel
@@ -116,16 +115,24 @@ class Biblioteca {
 						cin.get();
 						cin >> ano2;
 						cin.get();
-						cout << "Pesquisando obras entre " << ano1 << " e " << ano2 << endl;
-						searchObras(obras, ano1, ano2);
+						cout << "\nPesquisando obras entre " << ano1 << " e " << ano2 << endl << "\n";
+						searchObras(ano1, ano2);
 					}
 
 					if (op2 == 4) { // Totalização do número de obras por ano - Samuel vai implementar
-
+						cout << "Digite o ano:" << endl;
+						int ano;
+						cin >> ano;
+						int quantidade = porAno(obras, ano);
+						cout << "\nQuantidades de obras no ano " << ano << ": " << quantidade << endl;
 					}
 
 					if (op2 == 5) { // Totalização do número de obras por autor - Samuel vai implementar
-
+						cout << "Digite o nome do autor:" << endl;
+						string autor;
+						getline(cin, autor);
+						int quantidade = porAutor(obras, autor);
+						cout << "\nQuantidade de obras publicadas pelo autor " << autor << ": " << quantidade << endl;
 					}
 
 
@@ -146,7 +153,37 @@ class Biblioteca {
 		}
 
 		void adicionaObraTeclado() { // Diego vai implementar
+			Obra nova;
+			string temp;
+			int a;
 
+			cout << "\nDigite o nome da obra:" << endl;
+			getline(cin, temp);
+			nova.defineTitulo(temp);
+
+			cout << "\nDigite o ano de publicação:" << endl;
+			cin >> a;
+			cin.get();
+			nova.defineAno(a);
+
+			char choice;
+
+			while (choice != 'N') {
+				cout << "\nDigite o nome do autor:" << endl;
+				getline(cin, temp);
+				nova.defineAutor(temp);
+
+				cout << "\nDeseja adicionar outro autor? Digite 'S' para sim ou 'N' para não:" << endl;
+				cin >> choice;
+				cin.get();
+
+				if (choice != 'N' && choice != 'S') cout << "\nOpção inválida!" << endl;
+			}
+
+			for (int i = 0; i < nova.obtemNumAutor(); i++)
+				autores.insert(nova.obtemAutor(i));
+
+			obras.push_back(nova);
 		}
 
 		string obtemTitulos() { // Passa para um stringstream todos os títulos das obras que estão na lista de obras
@@ -178,7 +215,7 @@ class Biblioteca {
 
 		// MÉTODOS FEITOS PELO ÍCARO ABAIXO E COM OS COMENTÁRIOS DO PRÓPRIO //
 
-		void searchTitulo(vector<Obra> obras, string str1) { //busca em toda a base de dados por parte do título da obra, EXIBINDO OS DADOS DESSA OBRA, conforme é solicitado no enunciado
+		void searchTitulo(string str1) { //busca em toda a base de dados por parte do título da obra, EXIBINDO OS DADOS DESSA OBRA, conforme é solicitado no enunciado
 		// busca por titulo, obra a obra
 			int f = 0;//flag
 			for (int j = 0; j < obras.size(); j++) {
@@ -196,7 +233,7 @@ class Biblioteca {
 			if(f == 0) cout << "O termo " << str1 << " não foi encontrado na base de dados." << endl;
 		}
 
-		void searchAutor(vector<Obra> obras, string str1) {//busca em toda a base de dados por parte do nome do autor, EXIBINDO OS DADOS DESSA OBRA, conforme é solicitado no enunciado
+		void searchAutor(string str1) {//busca em toda a base de dados por parte do nome do autor, EXIBINDO OS DADOS DESSA OBRA, conforme é solicitado no enunciado
 		// busca por autor, obra a obra
 			int f = 0;//flag
 			for (int j = 0; j < obras.size(); j++) {
@@ -218,10 +255,35 @@ class Biblioteca {
 			if(f == 0) cout << "O nome " << str1 << " não foi encontrado na base de dados." << endl;
 		}
 
-		void searchObras(vector <Obra> obras, int a1, int a2){
+		void searchObras(int a1, int a2){
 			for(int i = 0; i < obras.size(); i++)
 				if(obras[i].obtemAno() >= a1 && obras[i].obtemAno() <= a2)
 					cout << obras[i].obtemObra() << endl;
 
+		}
+		
+		int porAno(vector <Obra> obras, int ano){ // sam
+			int qtd = 0;
+			for(int i = 0; i < obras.size(); i++){
+				if(obras[i].obtemAno() == ano){
+					qtd++;
+				}
+			}
+			return qtd;
+		}
+		
+		int porAutor(vector <Obra> obras, string autor){// sam
+			int qtd = 0;
+			for (int i = 0; i < obras.size(); i++) {
+				for (int j = 0; j < obras[j].obtemNumAutor(); j++) {
+					string nomeAutor = obras[i].obtemAutor(j);
+					size_t achou = nomeAutor.find(autor);
+					if (achou != string::npos) {
+						qtd++;
+						break;
+					}
+				}
+			}
+			return qtd;
 		}
 	};

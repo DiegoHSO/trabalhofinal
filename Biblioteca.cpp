@@ -280,7 +280,6 @@ class Biblioteca {
 					size_t achou = nomeAutor.find(autor);
 					if (achou != string::npos) {
 						qtd++;
-						break;
 					}
 				}
 			}

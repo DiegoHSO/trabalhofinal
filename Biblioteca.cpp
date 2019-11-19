@@ -2,7 +2,7 @@
 #include<string>
 #include<sstream>
 #include<vector>
-#include<set>
+#include<algorithm>
 #include "Obra.cpp"
 
 using namespace std;
@@ -11,7 +11,7 @@ class Biblioteca {
 
 	private:
 		vector<Obra> obras;
-		set<string> autores;
+		vector<string> autores;
 
 	public:
 		Biblioteca() {}
@@ -42,6 +42,7 @@ class Biblioteca {
 						cout << "\nDigite o nome do arquivo no formato .enw:" << endl;
 						string n;
 						getline(cin, n);
+						n = n + ".enw";
 						adicionaObraArquivo(n); // Método implementado abaixo
 					}
 
@@ -54,12 +55,13 @@ class Biblioteca {
 			}
 
 			int op;
-			while (op != 5) {
+			while (op != 6) {
 				cout << "(1) Ver todas as obras cadastradas" << endl;
 				cout << "(2) Ver todos os autores cadastrados" << endl;
 				cout << "(3) Ver todas as obras e seus respectivos dados (autor(es), ano de lançamento, título)" << endl;
 				cout << "(4) Filtrar as obras por critérios específicos" << endl;
-				cout << "(5) Sair do programa" << endl;
+				cout << "(5) Exportar dados de conexões entre autores para o modelo GraphViz" << endl;
+				cout << "(6) Sair do programa" << endl;
 
 				cin >> op;
 				cin.get();
@@ -138,6 +140,8 @@ class Biblioteca {
 
 				}
 
+				if (op == 5)
+
 				cout << endl;
 			}
 		}
@@ -147,7 +151,10 @@ class Biblioteca {
 			Obra nova(nome);
 
 			for (int i = 0; i < nova.obtemNumAutor(); i++)
-				autores.insert(nova.obtemAutor(i));
+				autores.push_back(nova.obtemAutor(i));
+
+        		sort(autores.begin(), autores.end());
+	       		autores.erase(unique(autores.begin(), autores.end()), autores.end());
 
 			obras.push_back(nova);
 		}
@@ -181,7 +188,10 @@ class Biblioteca {
 			}
 
 			for (int i = 0; i < nova.obtemNumAutor(); i++)
-				autores.insert(nova.obtemAutor(i));
+				autores.push_back(nova.obtemAutor(i));
+
+        		sort(autores.begin(), autores.end());
+	       		autores.erase(unique(autores.begin(), autores.end()), autores.end());
 
 			obras.push_back(nova);
 		}
@@ -198,9 +208,10 @@ class Biblioteca {
 		string obtemAutores() {
 			stringstream ss;
 			ss << "Autores cadastrados:" << endl;
-			set <string> :: iterator itr;
-			for (itr = autores.begin(); itr != autores.end(); ++itr)
-				ss << *itr << endl;
+			for (int i = 0; i < autores.size(); i++)
+				ss << autores[i] << endl;
+
+			ss << "\n";
 
 			return ss.str();
 		}
@@ -261,7 +272,7 @@ class Biblioteca {
 					cout << obras[i].obtemObra() << endl;
 
 		}
-		
+
 		int porAno(vector <Obra> obras, int ano){ // sam
 			int qtd = 0;
 			for(int i = 0; i < obras.size(); i++){
@@ -271,7 +282,7 @@ class Biblioteca {
 			}
 			return qtd;
 		}
-		
+
 		int porAutor(vector <Obra> obras, string autor){// sam
 			int qtd = 0;
 			for (int i = 0; i < obras.size(); i++) {

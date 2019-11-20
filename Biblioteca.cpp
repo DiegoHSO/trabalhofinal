@@ -51,12 +51,11 @@ class Biblioteca {
 
 				else if (choice != 'S' && choice != 'N') cout << "Digite uma opção válida!" << endl;
 
-				cout << "\n";
 			}
 
 			int op;
 			while (op != 6) {
-				cout << "(1) Ver todas as obras cadastradas" << endl;
+				cout << "\n(1) Ver todas as obras cadastradas" << endl;
 				cout << "(2) Ver todos os autores cadastrados" << endl;
 				cout << "(3) Ver todas as obras e seus respectivos dados (autor(es), ano de lançamento, título)" << endl;
 				cout << "(4) Filtrar as obras por critérios específicos" << endl;
@@ -125,7 +124,7 @@ class Biblioteca {
 						cout << "Digite o ano:" << endl;
 						int ano;
 						cin >> ano;
-						int quantidade = porAno(obras, ano);
+						int quantidade = porAno(ano);
 						cout << "\nQuantidades de obras no ano " << ano << ": " << quantidade << endl;
 					}
 
@@ -133,7 +132,7 @@ class Biblioteca {
 						cout << "Digite o nome do autor:" << endl;
 						string autor;
 						getline(cin, autor);
-						int quantidade = porAutor(obras, autor);
+						int quantidade = porAutor(autor);
 						cout << "\nQuantidade de obras publicadas pelo autor " << autor << ": " << quantidade << endl;
 					}
 
@@ -273,7 +272,7 @@ class Biblioteca {
 
 		}
 
-		int porAno(vector <Obra> obras, int ano){ // sam
+		int porAno(int ano){ // sam
 			int qtd = 0;
 			for(int i = 0; i < obras.size(); i++){
 				if(obras[i].obtemAno() == ano){
@@ -283,7 +282,7 @@ class Biblioteca {
 			return qtd;
 		}
 
-		int porAutor(vector <Obra> obras, string autor){// sam
+		int porAutor(string autor){// sam
 			int qtd = 0;
 			for (int i = 0; i < obras.size(); i++) {
 				for (int j = 0; j < obras[j].obtemNumAutor(); j++) {

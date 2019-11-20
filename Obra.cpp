@@ -111,4 +111,9 @@ class Obra {
 			}
 			return ss.str();
 		}
+
+		vector<string> obtemAutores() {
+			return autores;
+		}
+
 };

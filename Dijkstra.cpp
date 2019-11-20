@@ -102,22 +102,3 @@ class Grafo
 			return distancia[dest];
 		}
 };
-void inicia(){
-	cout << "Inicia" <<endl;
-}
-int main()
-{
-	inicia();
-	Grafo g(10);
-	g.addEdge(0, 1, 4);
-	g.addEdge(0, 2, 2);
-	g.addEdge(0, 3, 5);
-	g.addEdge(1, 4, 1);
-	g.addEdge(2, 1, 1);
-	g.addEdge(2, 3, 2);
-	g.addEdge(2, 4, 1);
-	g.addEdge(3, 4, 1);
-
-	cout << g.dijkstra(0, 4) << endl;
-	return 0;
-}

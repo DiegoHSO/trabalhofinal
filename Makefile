@@ -8,8 +8,8 @@ CFLAGS = -c
 all:	$(EXECUTAVEL)
 
 
-bib: main.o Obra.o Biblioteca.o
-	$(CC) main.o Obra.o Biblioteca.o -o $(EXECUTAVEL)
+bib: main.o Obra.o Biblioteca.o Dijkstra.o
+	$(CC) main.o Obra.o Biblioteca.o Dijkstra.o -o $(EXECUTAVEL)
 
 
 main.o: main.cpp
@@ -24,9 +24,12 @@ Biblioteca.o: Biblioteca.cpp
 	$(CC) $(CFLAGS) Biblioteca.cpp
 
 
+Dijkstra.o: Dijkstra.cpp
+	$(CC) $(CFLAGS) Dijkstra.cpp
+
 run:	$(EXECUTAVEL)
 	@./$(EXECUTAVEL)
 
 
 clean:
-	@rm -f ref main.o Obra.o Biblioteca.o $(EXECUTAVEL)
+	@rm -f ref main.o Obra.o Biblioteca.o Dijkstra.o $(EXECUTAVEL)

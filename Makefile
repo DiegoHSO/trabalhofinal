@@ -1,35 +1,28 @@
-# Makefile
+#Makefile (Trabalho final de Algoritmos II;Diego Henrique, Ícaro Stumpf, Samuel Nascimento; Novembro de 2019)
 
-EXECUTAVEL = bib
-CC = g++
-CFLAGS = -c
+CFLAGS=-std=c++11
 
+all:		app
 
-all:	$(EXECUTAVEL)
+app:		main.o Biblioteca.o Obra.o Grafo.o
+		@g++ main.o Biblioteca.o Obra.o Grafo.o -o app
 
+main.o:		main.cpp Biblioteca.hpp Obra.hpp Grafo.hpp 
+		@g++ ${CFLAGS} -c main.cpp
 
-bib: main.o Obra.o Biblioteca.o Dijkstra.o
-	$(CC) main.o Obra.o Biblioteca.o Dijkstra.o -o $(EXECUTAVEL)
+Biblioteca.o:	Biblioteca.cpp Biblioteca.hpp
+		@g++ ${CFLAGS} -c Biblioteca.cpp
 
+		
+Obra.o:		Obra.cpp Obra.hpp
+		@g++ ${CFLAGS} -c Obra.cpp
 
-main.o: main.cpp
-	$(CC) $(CFLAGS) main.cpp
+Grafo.o:	Grafo.cpp Grafo.hpp
+		@g++ ${CFLAGS} -c Grafo.cpp
 
-
-Obra.o: Obra.cpp
-	$(CC) $(CFLAGS) Obra.cpp
-
-
-Biblioteca.o: Biblioteca.cpp
-	$(CC) $(CFLAGS) Biblioteca.cpp
-
-
-Dijkstra.o: Dijkstra.cpp
-	$(CC) $(CFLAGS) Dijkstra.cpp
-
-run:	$(EXECUTAVEL)
-	@./$(EXECUTAVEL)
-
+run:		app
+		@ ./app
 
 clean:
-	@rm -f ref main.o Obra.o Biblioteca.o Dijkstra.o $(EXECUTAVEL)
+		@rm -f main.o Biblioteca.o Obra.o Grafo.o app
+

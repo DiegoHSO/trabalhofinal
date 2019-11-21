@@ -1,10 +1,11 @@
 #include<iostream>
 #include<string>
 #include<sstream>
+#include<fstream>
 #include<vector>
 #include<algorithm>
 #include "Obra.cpp"
-
+#include "Dijkstra.cpp"
 using namespace std;
 
 class Biblioteca {
@@ -12,6 +13,7 @@ class Biblioteca {
 	private:
 		vector<Obra> obras;
 		vector<string> autores;
+		Grafo grafo;
 
 	public:
 		Biblioteca() {}
@@ -21,7 +23,7 @@ class Biblioteca {
 			char choice = ' ';
 
 			while (choice != 'N') {
-				cout << "Deseja adicionar alguma obra? Digite 'S' para sim ou 'N' para não:" << endl;
+				cout << "\nDeseja adicionar alguma obra? Digite 'S' para sim ou 'N' para não:" << endl;
 				cin >> choice;
 				cin.get();
 				if (choice == 'S') {
@@ -54,13 +56,14 @@ class Biblioteca {
 			}
 
 			int op;
-			while (op != 6) {
+			while (op != 7) {
 				cout << "\n(1) Ver todas as obras cadastradas" << endl;
 				cout << "(2) Ver todos os autores cadastrados" << endl;
 				cout << "(3) Ver todas as obras e seus respectivos dados (autor(es), ano de lançamento, título)" << endl;
 				cout << "(4) Filtrar as obras por critérios específicos" << endl;
-				cout << "(5) Exportar dados de conexões entre autores para o modelo GraphViz" << endl;
-				cout << "(6) Sair do programa" << endl;
+				cout << "(5) Visualizar as distâncias colaborativas entre um autor e todos os outros" << endl;
+				cout << "(6) Exportar dados de conexões entre autores para o modelo Graphviz" << endl;
+				cout << "(7) Sair do programa" << endl;
 
 				cin >> op;
 				cin.get();
@@ -70,7 +73,7 @@ class Biblioteca {
 					cout << obtemTitulos(); // Método implementado abaixo
 				}
 
-	       			if (op == 2) {
+				if (op == 2) {
 					cout << obtemAutores(); // Método implementado abaixo
 				}
 
@@ -139,7 +142,19 @@ class Biblioteca {
 
 				}
 
-				if (op == 5)
+				if (op == 5) {
+					cout << "Digite o nome do autor:" << endl;
+					string tmp;
+					getline(cin, tmp);
+					visualizaDistancias(tmp);
+				}
+
+				if (op == 6) {
+					cout << "Digite o nome do arquivo para o qual deseja exportar:" << endl;
+					string tmp;
+					getline(cin, tmp);
+					toGraphviz(tmp);
+				}
 
 				cout << endl;
 			}
@@ -152,9 +167,8 @@ class Biblioteca {
 			for (int i = 0; i < nova.obtemNumAutor(); i++)
 				autores.push_back(nova.obtemAutor(i));
 
-        		sort(autores.begin(), autores.end());
-	       		autores.erase(unique(autores.begin(), autores.end()), autores.end());
-
+			sort(autores.begin(), autores.end());
+			autores.erase(unique(autores.begin(), autores.end()), autores.end());
 			obras.push_back(nova);
 		}
 
@@ -189,8 +203,8 @@ class Biblioteca {
 			for (int i = 0; i < nova.obtemNumAutor(); i++)
 				autores.push_back(nova.obtemAutor(i));
 
-        		sort(autores.begin(), autores.end());
-	       		autores.erase(unique(autores.begin(), autores.end()), autores.end());
+			sort(autores.begin(), autores.end());
+			autores.erase(unique(autores.begin(), autores.end()), autores.end());
 
 			obras.push_back(nova);
 		}
@@ -226,7 +240,7 @@ class Biblioteca {
 		// MÉTODOS FEITOS PELO ÍCARO ABAIXO E COM OS COMENTÁRIOS DO PRÓPRIO //
 
 		void searchTitulo(string str1) { //busca em toda a base de dados por parte do título da obra, EXIBINDO OS DADOS DESSA OBRA, conforme é solicitado no enunciado
-		// busca por titulo, obra a obra
+			// busca por titulo, obra a obra
 			int f = 0;//flag
 			for (int j = 0; j < obras.size(); j++) {
 				string str = obras[j].obtemTitulo(); //a string onde será buscada
@@ -244,7 +258,7 @@ class Biblioteca {
 		}
 
 		void searchAutor(string str1) {//busca em toda a base de dados por parte do nome do autor, EXIBINDO OS DADOS DESSA OBRA, conforme é solicitado no enunciado
-		// busca por autor, obra a obra
+			// busca por autor, obra a obra
 			int f = 0;//flag
 			for (int j = 0; j < obras.size(); j++) {
 				for (int k = 0; k < obras[j].obtemNumAutor(); k++) {//buscar em cada um dos autores 
@@ -255,7 +269,7 @@ class Biblioteca {
 						cout << "O autor "
 							<< str1
 							<< " aparece na obra: " << obras[j].obtemTitulo() << endl;
-							break;//achou já, não vai ter outro com o mesmo nome
+						break;//achou já, não vai ter outro com o mesmo nome
 					}
 
 				}
@@ -282,7 +296,7 @@ class Biblioteca {
 			return qtd;
 		}
 
-		int porAutor(string autor){// sam
+		int porAutor(string autor){
 			int qtd = 0;
 			for (int i = 0; i < obras.size(); i++) {
 				for (int j = 0; j < obras[j].obtemNumAutor(); j++) {
@@ -295,4 +309,90 @@ class Biblioteca {
 			}
 			return qtd;
 		}
-	};
+
+		void toGraph() {
+			for (int i = 0; i < autores.size(); i++) { // Verifica se o autor informado está cadastrado na base
+				for (int j = 0; j < obras.size(); j++) { // Procura por obras em que esse autor figure
+					vector<string> tmp = obras[j].obtemAutores(); // Cria um vector temporário que recebe os autores da obra em questão
+					for (int k = 0; k < tmp.size(); k++) { // Procura pelo autor no vector temporário
+						if (tmp[k] == autores[i]) {
+							tmp.erase(tmp.begin() + k); // Remove-o desse vector temporário
+							for (int l = 0; l < tmp.size(); l++) { // Percorre o vector temporário novamente
+								for (int m = 0; m < autores.size(); m++) { // Percorre o vector de autores
+									if (tmp[l] == autores[m]) { // Caso ache o autor relacionado
+											grafo.addEdge(i, m, 1); // Cria a lista de adjacências do autor 'i'
+											grafo.addEdge(m, i, 1); // Cria a lista de adjacências do autor 'i'
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		void visualizaDistancias(string nome) {
+			toGraph();
+			for (int i = 0; i < autores.size(); i++) { // Verifica se o autor informado está cadastrado na base
+				string str = autores[i]; //a string onde será buscada
+				size_t achou = str.find(nome);// "size_t achou" armazenará o índice do resultado da busca por str1 dentro de str.
+				if (achou != string::npos) {// npos= no position, ou seja, se o resultado não for "no position" é pq achou
+					for (int j = 0; j < autores.size(); j++) {
+						if (autores[i] != autores[j]) {
+							int distancia = grafo.dijkstra(i, j);
+							if (distancia == 10000000)
+								cout << "\nA distância de " << autores[i] << " para " << autores[j] << " é infinito." << endl;
+
+							else cout << "\nA distância de " << autores[i] << " para " << autores[j] << " é " << distancia << "." << endl;
+
+						}
+					}
+
+					return;
+				}
+
+			}
+
+			cerr << "\nAutor não cadastrado na Biblioteca!" << endl;
+		}
+
+
+		void toGraphviz(string arquivo) {
+			toGraph();
+			stringstream ss;
+
+			ss << "digraph G { " << endl;;
+			for (int i = 0; i < autores.size(); i++) { // Verifica se o autor informado está cadastrado na base
+				for (int j = 0; j < autores.size(); j++) {
+					if (autores[i] != autores[j]) {
+						int distancia = grafo.dijkstra(i, j);
+						if (distancia == 1) {
+							ss << "  \"" << autores[i] << "\"" << " -> " << "\"" << autores[j] << "\" " << endl;
+						}
+
+					}
+
+				}
+
+			}
+
+			ss << "} ";
+
+			ofstream arq;
+			arquivo = arquivo + ".txt";
+			arq.open(arquivo, ios::out);
+
+			if (!arq.is_open()) {
+				cerr << "\nArquivo inválido!" << endl;
+				arq.close();
+				return;
+			}
+
+
+			arq << ss.str();
+			arq.close();
+			cout << "\nArquivo exportado com sucesso! Para lê-lo, acesse: www.webgraphviz.com" << endl;
+		}
+
+
+};

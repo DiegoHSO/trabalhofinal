@@ -16,12 +16,12 @@ class Grafo
 		// e pares são úteis, no caso de grafos, pois cada aresta (edge) é um caminho entre dois pontos 
 
 		lista VetorListas[1000]; //...o contâiner vector(VetorListas) deveria conter essas litas, mas, APÓS MAIS DE MUITAS HORAS, EU DESISTI DE VECTOR E ESTOU USANDO ARRAY MESMO.
-		
+
 	public:
 
-		Grafo(int V)
+		Grafo()
 		{
-			this->V = V; //mais adiante ficará claro porque precisamos definir o número de vértices.
+			this->V = 1000; //mais adiante ficará claro porque precisamos definir o número de vértices.
 			for (int i=0; i<1000;i++){
 			VetorListas[i]={};
 			}

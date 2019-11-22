@@ -3,6 +3,8 @@ Trabalho Final - ALEST II
 
 INSTRUÇÕES PARA EXECUÇÃO DA APLICAÇÃO:
 
+- A aplicação deve ser compilada em algum terminal Linux.
+
 - Digitar na linha de comando do terminal "make run".
 
 - Durante a execução da aplicação, o usuário deve respeitar às solicitações dela. Por exemplo, na escolha de menus:
@@ -12,9 +14,11 @@ INSTRUÇÕES PARA EXECUÇÃO DA APLICAÇÃO:
 
 - Esta aplicação APENAS suporta o tipo "EndNote" (extensão .enw) para importação de arquivos. Qualquer outro tipo de arquivo de referência não será importado corretamente.
 
+- Conjuntamente aos arquivos .cpp e .hpp, há 3 exemplos de arquivos para serem usados para exportação. Os nomes são "ney.enw", "ney2.enw" e "ney3.enw".
+
 - Assim como é feita a exportação através do "Google Scholar", o usuário apenas poderá importar UMA referência/obra por vez para o programa.
 
 - Caso deseje exportar ou importar de um arquivo, o usuário deve apenas digitar o nome do mesmo, SEM a extensão. O programa irá concatená-la automaticamente. Por exemplo:
-                              Ao invés de digitar "obra.enw", digite apenas "obra". 
+                              Ao invés de digitar "ney.enw", digite apenas "ney". 
 
 - A exportação para o modelo Graphviz é feita através de um arquivo ".txt". O arquivo deve ser aberto em qualquer editor de texto e seu conteúdo copiado integralmente. Recomenda-se o uso dos artifícios "CTRL+A" + "CTRL+C". Depois, o usuário deve acessar o website "http://webgraphviz.com/" dar "CTRL+V" no campo onde deve ser inserido o código (ou simplesmente "Colar") e clicar em "Generate Graph!". Em seguida, o grafo deve ser exibido.

@@ -16,7 +16,7 @@ Biblioteca::Biblioteca() {}
 
 void Biblioteca::iniciar() { // Método que manipula a estrutura
 
-	char choice = ' ';
+	char choice;
 
 	while (choice != 'N') {
 		cout << "\nDeseja adicionar alguma obra? Digite 'S' para sim ou 'N' para não:" << endl;
@@ -35,6 +35,7 @@ void Biblioteca::iniciar() { // Método que manipula a estrutura
 
 			if (op == 1) {
 				adicionaObraTeclado();
+				cout << "Obra adiconada com sucesso!" << endl;
 			}
 
 			else if (op == 2) {
@@ -43,6 +44,7 @@ void Biblioteca::iniciar() { // Método que manipula a estrutura
 				getline(cin, n);
 				n = n + ".enw";
 				adicionaObraArquivo(n);
+				cout << "Obra adiconada com sucesso!" << endl;
 			}
 
 			else cout << "\nOpção inválida! Voltando ao menu anterior..." << endl;
@@ -53,14 +55,15 @@ void Biblioteca::iniciar() { // Método que manipula a estrutura
 	}
 
 	int op;
-	while (op != 7) {
+	while (op != 8) {
 		cout << "\n(1) Ver todas as obras cadastradas" << endl;
 		cout << "(2) Ver todos os autores cadastrados" << endl;
 		cout << "(3) Ver todas as obras e seus respectivos dados (autor(es), ano de lançamento, título)" << endl;
 		cout << "(4) Filtrar as obras por critérios específicos" << endl;
 		cout << "(5) Visualizar as distâncias colaborativas entre um autor e todos os outros" << endl;
 		cout << "(6) Exportar dados de conexões entre autores para o modelo Graphviz" << endl;
-		cout << "(7) Sair do programa" << endl;
+		cout << "(7) Inserir uma obra" << endl;
+		cout << "(8) Sair do programa" << endl;
 
 		cin >> op;
 		cin.get();
@@ -153,10 +156,39 @@ void Biblioteca::iniciar() { // Método que manipula a estrutura
 			toGraphviz(tmp);
 		}
 
-		else if (op > 7) cerr << "Opção inválida!" << endl;
+
+		if (op == 7) {
+			cout << "Deseja adicionar via:" << endl;
+			cout << "(1) Teclado" << endl;
+			cout << "(2) Arquivo" << endl;
+
+			int op2;
+			cin >> op2;
+			cin.get();
+
+			if (op2 == 1) {
+				adicionaObraTeclado();
+				cout << "Obra adiconada com sucesso!" << endl;
+			}
+
+			else if (op2 == 2) {
+				cout << "\nDigite o nome do arquivo no formato .enw:" << endl;
+				string n;
+				getline(cin, n);
+				n = n + ".enw";
+				adicionaObraArquivo(n);
+				cout << "Obra adiconada com sucesso!" << endl;
+			}
+
+			else cerr << "\nOpção inválida! Voltando ao menu anterior..." << endl;
+		}
+
+
+		if (op > 8) cerr << "Opção inválida!" << endl;
 
 		cout << endl;
 	}
+
 }
 
 

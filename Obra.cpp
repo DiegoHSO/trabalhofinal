@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Obra::Obra(string nome) {
+Obra::Obra(string nome) { // Construtor que recebe o nome de um arquivo para importação
 	numAutores = 0;
 	ano = 0;
 
@@ -26,7 +26,6 @@ Obra::Obra(string nome) {
 
 	while (arq.good()) {
 		arq >> id;
-		//cout << "ID vale:" << id << endl;
 
 		if (id == "%A") {
 			arq.get(); // Pega o espaço que vem depois do %A
@@ -60,41 +59,41 @@ Obra::Obra(string nome) {
 
 }
 
-Obra::Obra() {
+Obra::Obra() { // Construtor vazio
 	numAutores = 0;
 	ano = 0;
 }
 
-void Obra::defineAutor(string autor) {
+void Obra::defineAutor(string autor) { // setter
 	this->autores.push_back(autor);
 	this->numAutores = autores.size();
 }
 
-void Obra::defineAno(int ano) {
+void Obra::defineAno(int ano) { // setter
 	this->ano = ano;
 }
 
-void Obra::defineTitulo(string titulo) {
+void Obra::defineTitulo(string titulo) { // setter
 	this->titulo = titulo;
 }
 
-string Obra::obtemAutor(int n) {//criei para poder fazer a pesquisa por autor
+string Obra::obtemAutor(int n) { // getter
 	return autores[n];
 }
 
-int Obra::obtemNumAutor() {//criei para facilitar a pesquisa por autor
+int Obra::obtemNumAutor() { // getter
 	return numAutores;
 }
 
-string Obra::obtemTitulo() {
+string Obra::obtemTitulo() { // getter
 	return titulo;
 }
 
-int Obra::obtemAno() { // adicionei para poder fazer outro método na Biblioteca.cpp  / Samuel
+int Obra::obtemAno() { // getter
 	return ano;
 }
 
-string Obra::obtemObra() {
+string Obra::obtemObra() { // getter geral
 	stringstream ss;
 	ss << "Título: " << titulo << endl;
 	ss << "Ano de lançamento: " << ano << endl;
@@ -106,7 +105,7 @@ string Obra::obtemObra() {
 	return ss.str();
 }
 
-vector<string> Obra::obtemAutores() {
+vector<string> Obra::obtemAutores() { // getter especial (retorna o vector de autores da obra)
 	return autores;
 }
 
